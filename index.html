@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🎰 APPS KELLY MENEZES 🎰</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<!-- ✅ PWA (obrigatório) -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#00D9FF">
+
+<!-- ✅ iPhone (Safari) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="APPS KELLY">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+
+<style>
+:root{
+--bg0:#070a12;
+--bg1:#0b1220;
+--blue:#00D9FF;
+--blue2:#2D7DFF;
+--gold:#FFD700;
+--green:#39FF14;
+--text:#fff;
+--muted:rgba(255,255,255,.7);
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:"Poppins",sans-serif;
+color:var(--text);
+background:linear-gradient(135deg,var(--bg0),var(--bg1));
+}
+
+.wrap{
+max-width:1100px;
+margin:auto;
+padding:30px 16px 140px;
+text-align:center;
+}
+
+h1{
+font-weight:900;
+font-size:clamp(24px,5vw,44px);
+text-transform:uppercase;
+background:linear-gradient(90deg,var(--blue),var(--gold),var(--blue2));
+-webkit-background-clip:text;
+color:transparent;
+margin-bottom:10px;
+}
+
+.sub{
+color:var(--muted);
+font-size:15px;
+margin-bottom:25px;
+}
+
+.tools{
+display:flex;
+gap:12px;
+justify-content:center;
+flex-wrap:wrap;
+margin-bottom:25px;
+}
+
+.search{
+width:min(650px,100%);
+padding:14px 16px;
+border-radius:999px;
+background:rgba(255,255,255,.05);
+border:1px solid rgba(0,217,255,.3);
+}
+
+.search input{
+width:100%;
+border:0;
+background:transparent;
+color:white;
+font-weight:600;
+outline:none;
+text-align:center;
+font-size:15px;
+}
+
+#lobby{
+display:grid;
+gap:20px;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+justify-content:center;
+}
+
+/* 🔥 CARDS MAIORES */
+.app-card{
+border-radius:24px;
+padding:22px;
+cursor:pointer;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(0,217,255,.25);
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:16px;
+transition:.25s;
+min-height:220px;
+}
+
+.app-card:hover{
+transform:translateY(-10px);
+box-shadow:0 20px 50px rgba(0,217,255,.25);
+}
+
+.app-card img{
+width:110px;
+height:110px;
+border-radius:22px;
+object-fit:cover;
+}
+
+.app-card span{
+font-weight:900;
+font-size:15px;
+text-transform:uppercase;
+}
+
+.foot{
+margin-top:30px;
+font-size:13px;
+color:rgba(255,255,255,.5);
+}
+
+/* BOTÃO WHATSAPP CENTRALIZADO */
+#promotor-link{
+position:fixed;
+left:0;
+right:0;
+margin:auto;
+bottom:20px;
+width:max-content;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:12px;
+padding:16px 28px;
+border-radius:999px;
+text-decoration:none;
+background:linear-gradient(135deg,var(--green),#00ff88);
+color:#001208;
+font-weight:900;
+font-size:15px;
+box-shadow:0 20px 60px rgba(57,255,20,.35);
+z-index:999;
+transition:.2s;
+}
+
+#promotor-link:hover{
+transform:translateY(-6px);
+box-shadow:0 28px 70px rgba(57,255,20,.5);
+}
+
+#promotor-link img{
+width:24px;
+height:24px;
+}
+
+/* ===== MOBILE OTIMIZADO ===== */
+@media (max-width:768px){
+
+.wrap{
+padding:20px 14px 140px;
+}
+
+h1{
+font-size:26px;
+}
+
+.sub{
+font-size:14px;
+}
+
+.tools{
+flex-direction:column;
+align-items:center;
+}
+
+.search{
+width:100%;
+}
+
+#lobby{
+grid-template-columns:repeat(2,1fr);
+gap:16px;
+}
+
+.app-card{
+min-height:190px;
+padding:18px;
+}
+
+.app-card img{
+width:90px;
+height:90px;
+}
+
+.app-card span{
+font-size:13px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<h1>🎰 APPS KELLY MENEZES 🎰</h1>
+<p class="sub">🎲 Escolha seu app e toque para abrir no navegador. Se precisar de ajuda, chame no WhatsApp.</p>
+
+<div class="tools">
+<div class="search">
+<input id="q" type="search" placeholder="Buscar app...">
+</div>
+<div id="count">0 apps</div>
+</div>
+
+<section id="lobby"></section>
+
+<div class="foot">© <span id="year"></span> • Kelly Menezes</div>
+
+</div>
+
+<a id="promotor-link"
+href="https://wa.me/5514991203677"
+target="_blank"
+rel="noopener noreferrer">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+Chame sua Promotora
+</a>
+
+<script>
+const apps = [
+{ nome:"ÁGUIA", img:"https://ugc.production.linktr.ee/aec4543c-8b8c-419f-bcd6-3d6ccd68fcf2_image.png", url:"https://app.aguiaoficial.com/pr/KCs79OXF" },
+{ nome:"BANCA BRASILEIRA", img:"https://ugc.production.linktr.ee/5c5c0481-5366-4b77-8680-cd7aee224538_image.png", url:"https://app.bancabrasileira.com.br/pr/UbPsdC4m" },
+{ nome:"GOLDEN", img:"https://ugc.production.linktr.ee/6ddad7bc-41af-4143-8db3-556e9d1fb941_image.png", url:"https://app.goldenloterias.com/pr/U7XYTzve" },
+{ nome:"JB PIX", img:"https://ugc.production.linktr.ee/21c8eac6-37f8-4d6e-b584-75554d3a60ef_image.png", url:"https://app.jbpixs.com/pr/KnQetjvO" },
+{ nome:"GENERAL", img:"https://ugc.production.linktr.ee/69c0b3c0-0946-4f4f-be6f-5c82fea15618_image.png", url:"https://app.generalloterias.com/pr/SwMa4xqN" },
+{ nome:"ACERTOS CLUB", img:"https://ugc.production.linktr.ee/9c03d1f1-4005-42f1-a8e3-aec992cda73b_image.png", url:"https://app.acertos.club/pr/SdxFIW3a" },
+{ nome:"AMAZON", img:"https://ugc.production.linktr.ee/a0930558-595e-4785-9180-8867e1a88903_image.png", url:"https://app.amazonvip.bet/pr/wfVq2iCE" },
+{ nome:"VAI DAR BOA", img:"https://ugc.production.linktr.ee/74c11843-5061-42ec-bf1b-f17bc27b34ff_image.png", url:"https://app.vaidarboa.com/pr/OouyjpYN" },
+{ nome:"BRAZZ CLUB", img:"https://ugc.production.linktr.ee/ed3b0aa3-3869-4f20-a140-76e609145a56_image.png", url:"https://app.brazz.club/pr/FKAIceSU" },
+{ nome:"BANCA CERTA", img:"https://ugc.production.linktr.ee/5eedc95b-8974-447c-b595-b9a34393b7e8_image.png", url:"https://app.bancacerta.com/login/register?code=645983" },
+{ nome:"ÁGUIA PRIME", img:"https://ugc.production.linktr.ee/cead252c-0b64-4a8e-9aea-2e360927e6e8_image.png", url:"https://app.aguiaprime119000.com/pr/lGO8XJQq" },
+{ nome:"JB.ONLINE", img:"https://i.ibb.co/wkzJ9Nt/Whats-App-Image-2025-10-13-at-09-32-24.jpg", url:"https://jbonline.club/auto-cadastro?ref1=MzEw&ref2=MTU=" },
+{ nome:"SORTE SETE", img:"https://i.ibb.co/8L2YXgqP/Whats-App-Image-2025-10-13-at-09-30-36.jpg", url:"https://app.sortesete77.com?p=kEy6t9jl" },
+{ nome:"LOTERIA PARA TODOS 9x1", img:"https://i.ibb.co/Gf272658/9x1.jpg", url:"https://paratodosbrasil.vip/convite/JUJG1" },
+{ nome:"LOTERIA PARA TODOS 8x1", img:"https://i.ibb.co/fdxZMPhZ/8x1.jpg", url:"https://paratodos.me/convite/EQIC6" },
+{ nome:"PAVÃO DE OURO", img:"https://i.ibb.co/xqH3ZbBr/PAvao.jpg", url:"https://app.pavaodeouro.vip/pr/L2RHyeKh" },
+{ nome:"NEGO VÉIO", img:"https://i.ibb.co/7JgRxbwT/Nego.jpg", url:"https://app.negoveiojogosonline.vip/pr/stoqZOiE" },
+{ nome:"BAITA PULE", img:"https://i.ibb.co/gF9jDKCj/Baita.jpg", url:"https://baitapule.com/convite/4AKBG" },
+{ nome:"MAGO DA SORTE", img:"https://i.ibb.co/f7KhR0t/Whats-App-Image-2025-10-13-at-09-33-52.jpg", url:"https://magodasorte.vip/register/tg/KELLY" },
+{ nome:"GENERAL 2", img:"https://i.ibb.co/7tYQKrz4/Whats-App-Image-2025-10-13-at-09-40-32.jpg", url:"https://terminalonline.app/auto-cadastro?ref1=NTEz&ref2=MjM=" },
+{ nome:"LBR (COTAÇÃO 5000)", img:"https://ugc.production.linktr.ee/a487518d-0a6f-40ce-8e69-f81af785aa3f_image.png", url:"https://lbr.jbpix2.com/?c=5657ee95050f5a70d8ff86e3f4fb94d37cf0" },
+{ nome:"BANCA LOBO", img:"https://i.ibb.co/xK5qrQRG/8b980d96-ef34-45b2-9091-02fcf0d05906.jpg", url:"https://loboloterias.com/?c=62a06e06a306c297ed0f0878718e80918fa0" },
+{ nome:"APOSTAS ÁGUIA", img:"https://ugc.production.linktr.ee/c04c4ce7-31d9-4ccd-9508-2d26e840c254_image.png", url:"https://www.aguiaoficial.bet/?affiliate=promotorakellypix" },
+{ nome:"GRUPO DE PALPITES", img:"https://i.ibb.co/CsYMH4Vb/Whats-App-Image-2025-10-13-at-09-42-37.jpg", url:"https://chat.whatsapp.com/JDguOWOKftTCTIXDIdpcUx" }
+];
+
+const lobby=document.getElementById("lobby");
+const q=document.getElementById("q");
+const count=document.getElementById("count");
+
+function render(list){
+lobby.innerHTML="";
+list.forEach(app=>{
+const card=document.createElement("div");
+card.className="app-card";
+card.innerHTML=`<img src="${app.img}"><span>${app.nome}</span>`;
+card.onclick=()=>window.open(app.url,"_blank");
+lobby.appendChild(card);
+});
+count.textContent=list.length+" apps";
+}
+
+render(apps);
+
+q.addEventListener("input",()=>{
+const term=q.value.toLowerCase();
+render(apps.filter(a=>a.nome.toLowerCase().includes(term)));
+});
+
+document.getElementById("year").textContent=new Date().getFullYear();
+</script>
+
+<!-- ✅ POPUP DE INSTALAÇÃO -->
+<div id="install-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:2000; padding:18px;">
+  <div style="max-width:520px; margin:10vh auto 0; background:rgba(11,18,32,.96); border:1px solid rgba(0,217,255,.35); border-radius:22px; padding:18px 18px 16px; box-shadow:0 20px 80px rgba(0,217,255,.18);">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <div style="font-weight:900; letter-spacing:.5px; text-transform:uppercase; background:linear-gradient(90deg,#00D9FF,#FFD700,#2D7DFF); -webkit-background-clip:text; color:transparent; font-size:16px;">
+        Instalar App
+      </div>
+      <button id="install-close" style="border:0; background:transparent; color:white; font-size:22px; cursor:pointer; line-height:1;">✕</button>
+    </div>
+
+    <p style="margin:10px 0 14px; color:rgba(255,255,255,.78); font-size:14px; line-height:1.35;">
+      Adicione o <b>APPS KELLY</b> na tela inicial do seu celular para abrir como aplicativo.
+    </p>
+
+    <!-- ANDROID -->
+    <div id="install-android" style="display:none; gap:10px; flex-direction:column;">
+      <button id="install-btn" style="width:100%; padding:14px 16px; border-radius:14px; border:0; cursor:pointer; font-weight:900; background:linear-gradient(135deg,#39FF14,#00ff88); color:#001208;">
+        Instalar agora
+      </button>
+      <button id="install-later" style="width:100%; padding:12px 16px; border-radius:14px; border:1px solid rgba(255,255,255,.18); cursor:pointer; font-weight:800; background:rgba(255,255,255,.06); color:white;">
+        Agora não
+      </button>
+    </div>
+
+    <!-- iOS (Safari) -->
+    <div id="install-ios" style="display:none; color:rgba(255,255,255,.86); font-size:14px; line-height:1.35;">
+      <div style="background:rgba(255,255,255,.06); border:1px solid rgba(0,217,255,.18); border-radius:14px; padding:12px;">
+        <b>No iPhone:</b><br>
+        1) Toque em <b>Compartilhar</b> (quadrado com seta) <br>
+        2) Toque em <b>Adicionar à Tela de Início</b> <br>
+        3) Confirme em <b>Adicionar</b>
+      </div>
+
+      <button id="ios-ok" style="margin-top:12px; width:100%; padding:12px 16px; border-radius:14px; border:1px solid rgba(255,255,255,.18); cursor:pointer; font-weight:900; background:rgba(255,255,255,.06); color:white;">
+        Entendi
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ✅ Registra o Service Worker (necessário pro "Instalar") */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(()=>{});
+  });
+}
+
+let deferredPrompt = null;
+
+const overlay = document.getElementById("install-overlay");
+const closeBtn = document.getElementById("install-close");
+
+const boxAndroid = document.getElementById("install-android");
+const boxIOS = document.getElementById("install-ios");
+
+const installBtn = document.getElementById("install-btn");
+const laterBtn = document.getElementById("install-later");
+const iosOkBtn = document.getElementById("ios-ok");
+
+function isIOS() {
+  const ua = navigator.userAgent.toLowerCase();
+  return /iphone|ipad|ipod/.test(ua);
+}
+
+function isStandalone() {
+  return window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+}
+
+function canShowPopup() {
+  if (isStandalone()) return false;                 // já instalado
+  if (localStorage.getItem("hideInstallPopup")==="1") return false; // dispensou
+  return true;
+}
+
+function openPopup(type) {
+  if (!canShowPopup()) return;
+  overlay.style.display = "block";
+  boxAndroid.style.display = (type === "android") ? "flex" : "none";
+  boxIOS.style.display = (type === "ios") ? "block" : "none";
+}
+
+function hidePopup(remember=false) {
+  overlay.style.display = "none";
+  if (remember) localStorage.setItem("hideInstallPopup","1");
+}
+
+closeBtn.onclick = () => hidePopup(true);
+overlay.addEventListener("click", (e) => {
+  if (e.target === overlay) hidePopup(true);
+});
+
+if (laterBtn) laterBtn.onclick = () => hidePopup(true);
+if (iosOkBtn) iosOkBtn.onclick = () => hidePopup(true);
+
+/* ✅ Android/Chrome: o navegador libera o evento instalável */
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  setTimeout(() => openPopup("android"), 800);
+});
+
+if (installBtn) {
+  installBtn.onclick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice.catch(()=>null);
+    deferredPrompt = null;
+    hidePopup(true);
+  };
+}
+
+/* ✅ iPhone: não tem prompt automático — mostra tutorial */
+window.addEventListener("load", () => {
+  if (isIOS() && canShowPopup()) {
+    setTimeout(() => openPopup("ios"), 900);
+  }
+});
+</script>
+
+</body>
+</html>
